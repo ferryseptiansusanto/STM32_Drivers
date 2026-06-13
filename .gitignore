@@ -1,0 +1,10 @@
+Debug/
+Release/
+build/
+*.elf
+*.hex
+*.bin
+*.o
+*.ld
+*.launch
+

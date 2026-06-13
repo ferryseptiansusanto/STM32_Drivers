@@ -1,0 +1,58 @@
+/*
+ * usart_datalink.c
+ *
+ *  Created on: 13 May 2026
+ *      Author: ferry
+ */
+
+
+// usart_datalink.c
+#include "usart_datalink.h"
+#include <string.h>
+
+static uint8_t calc_crc(USART_Frame *f) {
+    uint8_t sum = f->header ^ f->cmd ^ f->len;
+    for (int i = 0; i < f->len; i++) sum ^= f->payload[i];
+    return sum;
+}
+
+int USART_Datalink_SendFrame(USART_Physical *phy, USART_Frame *frame) {
+    frame->crc = calc_crc(frame);
+    uint8_t buf[FRAME_MAX_LEN+4];
+    buf[0] = frame->header;
+    buf[1] = frame->cmd;
+    buf[2] = frame->len;
+    for (int i=0;i<frame->len;i++) buf[3+i] = frame->payload[i];
+    buf[3+frame->len] = frame->crc;
+    return (USART_Physical_Send(phy, buf, frame->len+4) == HAL_OK);
+}
+
+int USART_Datalink_ReceiveFrame(USART_Physical *phy, USART_Frame *frame) {
+    // sederhana: blocking receive
+    USART_Physical_Receive(phy, &frame->header, 1);
+    USART_Physical_Receive(phy, &frame->cmd, 1);
+    USART_Physical_Receive(phy, &frame->len, 1);
+    USART_Physical_Receive(phy, frame->payload, frame->len);
+    USART_Physical_Receive(phy, &frame->crc, 1);
+    return (frame->crc == calc_crc(frame));
+}
+
+int USART_DatalinkDMA_ParseBuffer(uint8_t *buf, uint16_t len, USART_Frame *frame) {
+    if (len < 4) return 0; // minimal header+cmd+len+crc
+
+    frame->header = buf[0];
+    frame->cmd    = buf[1];
+    frame->len    = buf[2];
+
+    if (frame->len > FRAME_MAX_LEN) return 0;
+
+    memcpy(frame->payload, &buf[3], frame->len);
+    frame->crc = buf[3 + frame->len];
+
+    // validasi CRC
+    uint8_t calc = frame->header ^ frame->cmd ^ frame->len;
+    for (int i = 0; i < frame->len; i++) calc ^= frame->payload[i];
+
+    return (frame->crc == calc);
+}
+
