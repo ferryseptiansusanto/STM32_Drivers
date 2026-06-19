@@ -37,7 +37,7 @@
 #include "lcd_task.h"
 //#include "lcd_wrapper.h"
 #include "flowmeter_driver.h"
-#include "dht.h"
+#include "aht.h"
 #include "keypad_driver.h"
 #include "keypad_task.h"
 #include "keypad_4x4.h" // atau keypad_3x4.h, keypad_5x5.h
@@ -67,7 +67,7 @@
 
 SPI_Context SDCard_Ctx;
 I2C_RTCDevice DS3231_Ctx;
-DHT_Device dht;
+AHT_Device aht;
 FlowSensor_t flowSensor;
 I2C_LCDDevice Lcd_Ctx;
 SemaphoreHandle_t SD_Card_Mutex;
@@ -93,7 +93,6 @@ void SystemClock_Config(void);
   * @retval int
   */
 int main(void)
-
 {
 
   /* USER CODE BEGIN 1 */
@@ -146,7 +145,7 @@ int main(void)
   //Init DS3231
   DS3231_Init(&DS3231_Ctx, &i2c2_ctx);
   //Init DHT
-  DHT_Init(&dht, GPIOB, GPIO_PIN_9, DHT11);
+  AHT_Init(&aht, &i2c2_ctx);
   //Init Flowmeter
   FlowSensor_Init(&flowSensor, YFS201, GPIOB, GPIO_PIN_11);
   //Init LCD

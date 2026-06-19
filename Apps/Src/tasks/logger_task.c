@@ -6,7 +6,7 @@
  */
 
 #include <current_sensor.h>
-#include "dht.h"
+#include "aht.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
@@ -31,7 +31,7 @@ RecordData SensorData;
 
 extern SemaphoreHandle_t SD_Card_Mutex;
 extern I2C_HandleTypeDef hi2c1;   // handle I2C untuk DS3231
-extern DHT_Device dht;
+extern AHT_Device aht;
 
 void vTaskLogger(void *pvParameters) {
     LoggerParams *params = (LoggerParams*)pvParameters;
@@ -104,11 +104,11 @@ void vTaskLogger(void *pvParameters) {
             }
 
             // 7. Isi record dari sensor
-			DHT_Data data;
+			AHT_Data data;
 			float_to_string_dynamic(CurrentSensor_Read(), SensorData.current, 0);
 			float_to_string_dynamic(VoltageSensor_Read(), SensorData.voltage, 0);
 
-			if (DHT_Read(&dht, &data, false) == DHT_OK) {
+			if (AHT_Read(&aht, &data, false) == AHT_OK) {
 				float_to_string_dynamic(data.temperature, SensorData.temp, 1);
 				float_to_string_dynamic(data.humidity, SensorData.humidity, 0);
 

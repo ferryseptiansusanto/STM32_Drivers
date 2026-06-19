@@ -55,7 +55,7 @@ static MenuTable AppMenu_GetTable(MenuState state) {
 
 // ===== Tampilan sensor default =====
 static void showSensor(I2C_LCDDevice *dev) {
-    char buf[21];
+    char buf[41];
     LCD_Clear(dev);
     LCD_SetCursor(dev,0,0);
     DS3231_DateTime now;
