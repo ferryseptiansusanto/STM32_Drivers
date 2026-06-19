@@ -90,8 +90,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="keypad/keypad_3x4.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Wrappers"/>
+						<entry excluding="sensors/dht.c|keypad/keypad_3x4.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry excluding="FreeRTOS/FreeRTOS-Kernel/timers.c|lwip|lwip/apps" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="ThirdParty"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Comm"/>
 						<entry excluding="Src/tasks/cmd_collect_task.c|Src/tasks/monitor_task.c|Src/tasks/net_task.c|Src/tasks/uploader_task.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Apps"/>
@@ -169,7 +169,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="keypad/keypad_3x4.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry excluding="sensors/dht.c|keypad/keypad_3x4.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
 					</sourceEntries>
 				</configuration>
