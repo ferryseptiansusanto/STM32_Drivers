@@ -1,34 +1,26 @@
 /*
  * AHT.h
  *
- *  Created on: 19 Jun 2026
- *      Author: ferry
+ * Created on: 19 Jun 2026
+ * Author: ferry
  */
 
 #ifndef SENSORS_AHT_H_
 #define SENSORS_AHT_H_
 
-/*
- * AHT.h
- *
- * Created on: 19 Jun 2026
- * Author: ferry
- */
-
 #include "stm32f1xx_hal.h"
 #include <stdbool.h>
+#include "i2c_wrapper.h"
 
-#define AHT_I2C_ADDRESS    (0x38 << 1) // Alamat I2C standar AHT (7-bit digeser ke kiri)
-#define AHT_MIN_INTERVAL   1000        // Jeda minimal pembacaan aman 1 detik ala Adafruit
+#define AHT_I2C_ADDRESS         (0x38 << 1)
+#define AHT_MIN_INTERVAL_MS     1000
 
-// Definisi Command AHT
-#define AHT_CMD_INITIALIZE 0xE1
-#define AHT_CMD_TRIGGER    0xAC
-#define AHT_CMD_SOFTRESET  0xBA
+#define AHT_CMD_INITIALIZE      0xE1
+#define AHT_CMD_TRIGGER         0xAC
+#define AHT_CMD_SOFTRESET       0xBA
 
-// Definisi Bit Status AHT
-#define AHT_STATUS_BUSY    0x80 // Bit 7: 1 = Sibuk, 0 = Siap
-#define AHT_STATUS_CALBOOT 0x08 // Bit 3: 1 = Terkalibrasi, 0 = Belum
+#define AHT_STATUS_BUSY         0x80
+#define AHT_STATUS_CALBOOT      0x08
 
 typedef enum {
     AHT_OK = 0,
@@ -42,18 +34,27 @@ typedef struct {
 } AHT_Data;
 
 typedef struct {
-    I2C_HandleTypeDef *hi2c;   // Menggunakan hardware I2C handle, bukan GPIO
-
-    // Variabel untuk algoritma cache Adafruit & FreeRTOS
-    uint8_t data[6];           // Buffer data mentah (1 byte status + 5 bytes data)
-    uint32_t last_read_time;   // Menyimpan tick waktu pembacaan terakhir
-    bool last_result;          // Menyimpan status keberhasilan terakhir
-    AHT_Data cached_data;    // Menyimpan cache hasil konversi terakhir
+    I2C_Context *i2c_ctx;                   // Merekatkan wrapper I2C Anda
+    I2C_Mode mode;                          // Menyimpan mode transfer (IT, DMA, dll)
+    uint8_t raw_buffer[6];                  // Buffer data mentah 6 Byte
+    uint32_t last_read_time;                // Sinkron dengan GetTick() Anda
+    AHT_Data cached_data;
+    bool last_result;
 } AHT_Device;
 
-// API
-AHT_Status AHT_Init(AHT_Device *dev, I2C_HandleTypeDef *hi2c);
-AHT_Status AHT_Read(AHT_Device *dev, AHT_Data *data, bool force);
+/* --- API dengan 2 Parameter pada Init --- */
 
+/**
+ * @brief Inisialisasi sensor AHT, hubungkan dengan I2C Context wrapper, dan set default mode.
+ * @param dev Pointer ke struktur AHT_Device lokal/global.
+ * @param ctx Pointer ke struktur I2C_Context dari wrapper (misal: &i2c1_ctx atau &i2c2_ctx).
+ * @return AHT_OK jika sukses, AHT_ERROR jika gagal terkoneksi.
+ */
+AHT_Status AHT_Init(AHT_Device *dev, I2C_Context *ctx);
+
+/**
+ * @brief Membaca data dari sensor secara non-blocking.
+ */
+AHT_Status AHT_Read(AHT_Device *dev, AHT_Data *output_data, bool force);
 
 #endif /* SENSORS_AHT_H_ */
