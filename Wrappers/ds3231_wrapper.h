@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "main.h"
+
 #include "i2c_wrapper.h"   // gunakan wrapper, bukan langsung HAL
 
 #define DS3231_ADDR  (0x68 << 1)   // 0xD0

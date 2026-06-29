@@ -8,7 +8,7 @@
 #ifndef FLOWMETER_FLOWMETER_DRIVER_H_
 #define FLOWMETER_FLOWMETER_DRIVER_H_
 
-#include "stm32f1xx_hal.h"
+#include "main.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "flowmeter_type.h"

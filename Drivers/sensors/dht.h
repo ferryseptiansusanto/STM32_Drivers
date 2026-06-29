@@ -8,7 +8,7 @@
 #ifndef SENSORS_DHT_H_
 #define SENSORS_DHT_H_
 
-#include "stm32f1xx_hal.h"
+#include "main.h"
 #include <stdbool.h>
 
 #define MIN_INTERVAL 2000 // Jeda minimal 2 detik standar Adafruit

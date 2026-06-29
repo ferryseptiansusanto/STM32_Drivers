@@ -1,10 +1,9 @@
 #ifndef SPI_WRAPPER_H
 #define SPI_WRAPPER_H
 
-#include "stm32f1xx_hal.h"   // sesuaikan dengan seri MCU kamu
+#include "main.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
-
 #define SPI_TIMEOUT_MS 1000
 
 extern SPI_HandleTypeDef hspi1;

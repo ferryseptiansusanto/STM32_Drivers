@@ -8,7 +8,7 @@
 #ifndef USART_DATALINK_H_
 #define USART_DATALINK_H_
 
-#include "usart_physical.h"
+#include <uart_wrapper.h>
 
 #define FRAME_MAX_LEN 64
 
@@ -20,8 +20,8 @@ typedef struct {
     uint8_t crc;
 } USART_Frame;
 
-int USART_Datalink_SendFrame(USART_Physical *phy, USART_Frame *frame);
-int USART_Datalink_ReceiveFrame(USART_Physical *phy, USART_Frame *frame);
+int USART_Datalink_SendFrame(UART_Context *dev, USART_Frame *frame);
+int USART_Datalink_ReceiveFrame(UART_Context *dev, USART_Frame *frame);
 int USART_DatalinkDMA_ParseBuffer(uint8_t *buf, uint16_t len, USART_Frame *frame);
 
 #endif /* USART_DATALINK_H_ */

@@ -8,10 +8,8 @@
 #ifndef I2C_WRAPPER_H_
 #define I2C_WRAPPER_H_
 
-
-#include "stm32f1xx_hal.h"
-
 #define I2C_TIMEOUT_MS 1000
+#include "main.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include <stdbool.h>

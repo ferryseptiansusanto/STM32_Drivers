@@ -72,7 +72,7 @@ FlowSensor_t flowSensor;
 I2C_LCDDevice Lcd_Ctx;
 SemaphoreHandle_t SD_Card_Mutex;
 I2C_KeypadDevice Keypad_Ctx;
-USART_Physical usart1_phy, usart2_phy;
+
 QueueHandle_t uartQueue;
 
 /* USER CODE END PV */
@@ -129,8 +129,8 @@ int main(void)
   SPI_Init(&spi2_ctx);
   I2C_Init(&i2c1_ctx);
   I2C_Init(&i2c2_ctx);
-  USART_Physical_Init(&usart1_phy, &huart1);
-  USART_Physical_Init(&usart2_phy, &huart2);
+  UART_Init(&uart1_ctx, &huart1);
+  UART_Init(&uart1_ctx, &huart2);
 
 
   uartQueue = xQueueCreate(10, sizeof(USART_Message));

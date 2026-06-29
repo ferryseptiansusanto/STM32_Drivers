@@ -8,7 +8,7 @@
 #ifndef SENSORS_AHT_H_
 #define SENSORS_AHT_H_
 
-#include "stm32f1xx_hal.h"
+#include "main.h"
 #include <stdbool.h>
 #include "i2c_wrapper.h"
 

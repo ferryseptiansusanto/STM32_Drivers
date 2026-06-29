@@ -9,7 +9,7 @@
 #define INC_FREERTOSCONFIG_H_
 //#define configASSERT(x) do { if((x) == 0) vAssertCalled(__FILE__, __LINE__); } while(0)
 #define configASSERT(x)
-#include "stm32f1xx.h"   // Sesuaikan dengan seri MCU kamu
+#include "main.h"   // Sesuaikan dengan seri MCU kamu
 
 /*-----------------------------------------------------------
  * Application specific definitions.

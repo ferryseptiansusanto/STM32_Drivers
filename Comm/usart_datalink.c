@@ -8,6 +8,7 @@
 
 // usart_datalink.c
 #include "usart_datalink.h"
+#include "uart_wrapper.h"
 #include <string.h>
 
 static uint8_t calc_crc(USART_Frame *f) {
@@ -16,7 +17,7 @@ static uint8_t calc_crc(USART_Frame *f) {
     return sum;
 }
 
-int USART_Datalink_SendFrame(USART_Physical *phy, USART_Frame *frame) {
+int USART_Datalink_SendFrame(UART_Context *dev, USART_Frame *frame) {
     frame->crc = calc_crc(frame);
     uint8_t buf[FRAME_MAX_LEN+4];
     buf[0] = frame->header;
@@ -24,16 +25,16 @@ int USART_Datalink_SendFrame(USART_Physical *phy, USART_Frame *frame) {
     buf[2] = frame->len;
     for (int i=0;i<frame->len;i++) buf[3+i] = frame->payload[i];
     buf[3+frame->len] = frame->crc;
-    return (USART_Physical_Send(phy, buf, frame->len+4) == HAL_OK);
+    return (UART_Send(dev, buf, frame->len+4) == HAL_OK);
 }
 
-int USART_Datalink_ReceiveFrame(USART_Physical *phy, USART_Frame *frame) {
+int USART_Datalink_ReceiveFrame(UART_Context *dev, USART_Frame *frame) {
     // sederhana: blocking receive
-    USART_Physical_Receive(phy, &frame->header, 1);
-    USART_Physical_Receive(phy, &frame->cmd, 1);
-    USART_Physical_Receive(phy, &frame->len, 1);
-    USART_Physical_Receive(phy, frame->payload, frame->len);
-    USART_Physical_Receive(phy, &frame->crc, 1);
+    UART_Receive(dev, &frame->header, 1);
+    UART_Receive(dev, &frame->cmd, 1);
+    UART_Receive(dev, &frame->len, 1);
+    UART_Receive(dev, frame->payload, frame->len);
+    UART_Receive(dev, &frame->crc, 1);
     return (frame->crc == calc_crc(frame));
 }
 

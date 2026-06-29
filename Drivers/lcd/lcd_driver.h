@@ -14,7 +14,7 @@
 #ifndef LCD_LCD_DRIVER_H_
 #define LCD_LCD_DRIVER_H_
 
-#include "stm32f1xx_hal.h"
+#include "main.h"
 #include "i2c_wrapper.h"
 #include <stdint.h>
 #include <stdbool.h>

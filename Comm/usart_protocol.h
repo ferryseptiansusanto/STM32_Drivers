@@ -23,8 +23,8 @@ typedef struct {
     uint8_t len;
 } USART_Message;
 
-int USART_Protocol_Send(USART_Physical *phy, USART_Message *msg);
-int USART_Protocol_Receive(USART_Physical *phy, USART_Message *msg);
-int USART_ProtocolDMA_Parse(USART_Frame *frame, USART_Message *msg);
+int UART_Protocol_Send(UART_Context *dev, USART_Message *msg);
+int UART_Protocol_Receive(UART_Context *dev, USART_Message *msg);
+int UART_ProtocolDMA_Parse(USART_Frame *frame, USART_Message *msg);
 
 #endif /* USART_PROTOCOL_H_ */

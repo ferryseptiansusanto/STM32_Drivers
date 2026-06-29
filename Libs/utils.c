@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "FreeRTOS.h"
 #include "task.h"
-#include "stm32f1xx.h"
+#include "main.h"
 #include <math.h>
 extern UART_HandleTypeDef huart2;
 
